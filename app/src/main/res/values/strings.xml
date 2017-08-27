@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Torey</string>
+    <string name="created_by">Created By Torey</string>
+    <string name="sign_up">sign up</string>
+    <string name="sign_in">sign in</string>
+    <string name="btn_cancle">CANCLE</string>
+    <string name="btn_create">CREATE ACCOUNT</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+</resources>

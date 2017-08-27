@@ -1,0 +1,120 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#eb0000"
+    tools:context="com.example.torey.projectlogin.view.Activity.MainActivity">
+
+    <!--<ImageView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:contentDescription="@null"-->
+        <!--android:scaleType="centerCrop"/>-->
+        <!--&lt;!&ndash;android:src="@drawable/image_view1"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:tint="#66000000" &ndash;&gt;-->
+
+    <ImageView
+        android:id="@+id/wink"
+        android:scaleType="fitXY"
+        android:layout_width="350dp"
+        android:layout_height="250dp"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/logo_mavel"
+        android:layout_margin="25dp"
+        android:contentDescription="@null" />
+    <!--<TextView-->
+        <!--android:layout_below="@+id/wink"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="Welcome"-->
+        <!--android:textSize="30sp"-->
+        <!--android:gravity="center"-->
+        <!--android:paddingTop="8dp"-->
+        <!--android:paddingBottom="8dp"-->
+        <!--android:textColor="#000000"-->
+        <!--android:textStyle="italic"/>-->
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="45dp"
+                android:layout_height="40dp"
+                android:src="@drawable/logo_id"
+                />
+            <EditText
+                android:id="@+id/username"
+                android:maxLines="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="25dp"
+                android:inputType="text" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="45dp"
+                android:layout_height="40dp"
+                android:src="@drawable/logo_password"
+                />
+            <EditText
+                android:maxLines="1"
+                android:id="@+id/password"
+                android:inputType="numberPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="25dp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+            <Button
+                android:id="@+id/sing_in"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_margin="8dp"
+                android:layout_weight="0.5"
+                android:background="@drawable/login_selector"
+                android:gravity="center"
+                android:text="sign_in"
+                android:textColor="#000000" />
+
+            <Button
+                android:id="@+id/sing_up"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_margin="8dp"
+                android:layout_weight="0.5"
+                android:gravity="center"
+                android:background="@drawable/click_selector"
+                android:text="sign_up"
+                android:textColor="#FFFFFF" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:textColor="#bf3c3a3a"
+            android:text="@string/created_by"/>
+    </LinearLayout>
+
+</RelativeLayout>
