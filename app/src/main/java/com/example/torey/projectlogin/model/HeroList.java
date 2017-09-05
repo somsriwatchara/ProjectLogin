@@ -4,9 +4,8 @@ import java.util.List;
 
 
 
-public class HeroList {
+public class HeroList extends GenericStatus {
     private List<Hero> elements;
-
 
     public void setElements(List<Hero> elements) {
         this.elements = elements;

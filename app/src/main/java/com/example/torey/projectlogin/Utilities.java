@@ -1,5 +1,6 @@
 package com.example.torey.projectlogin;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapShader;
@@ -17,41 +18,79 @@ import com.bumptech.glide.load.resource.bitmap.BitmapTransformation;
  */
 
 public class Utilities {
-    Utilities(){
+
+    Utilities() {
 
     }
-    public static boolean  validateUsername(String UsernameString, String PasswordString, Context context){
+
+    public static boolean validateUsername(String UsernameString, String PasswordString, Context context) {
         boolean isEmpty = false;
         if (UsernameString.equals("")) {
             isEmpty = true;
             Toast.makeText(context, "Please input Username", Toast.LENGTH_LONG).show();
             return isEmpty;
-        }else if (PasswordString.equals("")) {
+        } else if (PasswordString.equals("")) {
             isEmpty = true;
             Toast.makeText(context, "Please input Password", Toast.LENGTH_LONG).show();
             return isEmpty;
         }
         return false;
     }
-    public static void setloadImagesconner (Context context, String url, ImageView imageView){
+
+    public static boolean validateSignUp(String insertInputUsername, String insertInputPassword,
+                                         String insertInputName, String insertInputEmail, String insertInputImage,
+                                         String insertInputTel, Context context) {
+        boolean isEmpty = false;
+        if (insertInputUsername.equals("")) {
+            isEmpty = true;
+            Toast.makeText(context, "Please input Username", Toast.LENGTH_LONG).show();
+            return isEmpty;
+        } else if (insertInputPassword.equals("")) {
+            isEmpty = true;
+            Toast.makeText(context, "Please input Password", Toast.LENGTH_LONG).show();
+            return isEmpty;
+        } else if (insertInputName.equals("")) {
+            isEmpty = true;
+            Toast.makeText(context, "Please input Name", Toast.LENGTH_LONG).show();
+            return isEmpty;
+        } else if (insertInputEmail.equals("")) {
+            isEmpty = true;
+            Toast.makeText(context, "Please input Email", Toast.LENGTH_LONG).show();
+            return isEmpty;
+        } else if (insertInputImage.equals("")) {
+            isEmpty = true;
+            Toast.makeText(context, "Please input Image", Toast.LENGTH_LONG).show();
+            return isEmpty;
+        } else if (insertInputTel.equals("")) {
+            isEmpty = true;
+            Toast.makeText(context, "Please input Tel", Toast.LENGTH_LONG).show();
+            return isEmpty;
+        }
+        return false;
+    }
+
+    public static void setloadImagesconner(Context context, String url, ImageView imageView) {
         Glide.with(context)
                 .load(url)
                 .transform(new CircleTransform(context))
                 .placeholder(R.drawable.logo_id)
                 .into(imageView);
     }
-    public static void setloadImages (Context context, String url, ImageView imageView){
+
+    public static void setloadImages(Context context, String url, ImageView imageView) {
         Glide.with(context)
                 .load(url)
                 .placeholder(R.drawable.logo_id)
                 .into(imageView);
     }
+
     public static class CircleTransform extends BitmapTransformation {
         public CircleTransform(Context context) {
             super(context);
         }
 
-        @Override protected Bitmap transform(BitmapPool pool, Bitmap toTransform, int outWidth, int outHeight) {
+        @Override
+        protected Bitmap transform(BitmapPool pool, Bitmap toTransform, int outWidth, int outHeight) {
             return circleCrop(pool, toTransform);
         }
 
@@ -79,7 +118,8 @@ public class Utilities {
             return result;
         }
 
-        @Override public String getId() {
+        @Override
+        public String getId() {
             return getClass().getName();
         }
     }

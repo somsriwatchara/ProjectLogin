@@ -1,19 +1,20 @@
 package com.example.torey.projectlogin.model;
 
+import com.google.gson.annotations.SerializedName;
+
+import java.util.List;
+
 /**
  * Created by TOREY on 8/20/2017.
  */
 
-public class Login {
-    private Integer status_code;
-    private String status_description;
+public class Login extends GenericStatus{
+    @SerializedName("user_detail")
+    private List<UserDetail> userDetails;
 
-    public Integer getStatus_code() {
-        return status_code;
+    public List<UserDetail> getUserDetails() {
+        return userDetails;
     }
 
-    public String getStatus_description() {
-        return status_description;
-    }
 
 }

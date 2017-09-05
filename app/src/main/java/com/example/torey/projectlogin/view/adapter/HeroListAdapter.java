@@ -2,17 +2,22 @@ package com.example.torey.projectlogin.view.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.TypedArray;
+import android.graphics.Color;
+import android.os.Parcelable;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.torey.projectlogin.R;
 import com.example.torey.projectlogin.Utilities;
 import com.example.torey.projectlogin.model.Hero;
+import com.example.torey.projectlogin.model.UserDetail;
 import com.example.torey.projectlogin.view.Activity.DescriptionAcrivity;
 
 import java.util.List;
@@ -20,10 +25,13 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.example.torey.projectlogin.Constants.HERO_LIST;
+
 
 public class HeroListAdapter extends RecyclerView.Adapter<HeroListAdapter.HeroCardViewHolder> {
     private Context context;
     private List<Hero> heroes;
+
 
 
 
@@ -46,22 +54,16 @@ public class HeroListAdapter extends RecyclerView.Adapter<HeroListAdapter.HeroCa
     public void onBindViewHolder(HeroCardViewHolder holder, final int position) {
         Utilities.setloadImagesconner(
                 context
-                , heroes.get(position).getImage()
+                , heroes.get(position).getProduct_image()
                 , holder.logoImageView
         );
-
-        holder.heroName.setText(heroes.get(position).getTitle());
+        holder.heroName.setText(heroes.get(position).getProduct_name());
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, DescriptionAcrivity.class);
-                intent.putExtra("imagesDescription", heroes.get(position).getImage());
-                intent.putExtra("titleDescription", heroes.get(position).getTitle());
-                intent.putExtra("introDescription", heroes.get(position).getIntro());
-                intent.putExtra("colorDescription", heroes.get(position).getColor());
-                intent.putExtra("textDescription", heroes.get(position).getText());
-                intent.putExtra("yearDescription", heroes.get(position).getYear());
-
+                //Put Parcelable
+                intent.putExtra(HERO_LIST,heroes.get(position));
                 context.startActivity(intent);
 
             }
@@ -82,7 +84,6 @@ public class HeroListAdapter extends RecyclerView.Adapter<HeroListAdapter.HeroCa
 
         @BindView(R.id.hero_name)
         TextView heroName;
-
         public HeroCardViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);

@@ -2,7 +2,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#eb0000"
     tools:context="com.example.torey.projectlogin.view.Activity.MainActivity">
 
     <!--<ImageView-->
@@ -17,9 +16,9 @@
         android:id="@+id/wink"
         android:scaleType="fitXY"
         android:layout_width="350dp"
-        android:layout_height="250dp"
+        android:layout_height="350dp"
         android:layout_centerHorizontal="true"
-        android:src="@drawable/logo_mavel"
+        android:src="@drawable/logo_wink_white"
         android:layout_margin="25dp"
         android:contentDescription="@null" />
     <!--<TextView-->
@@ -72,7 +71,7 @@
             <EditText
                 android:maxLines="1"
                 android:id="@+id/password"
-                android:inputType="numberPassword"
+                android:inputType="textPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="25dp"/>
