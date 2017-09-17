@@ -3,7 +3,7 @@ package com.example.torey.projectlogin.model;
 import java.util.List;
 
 
-public class UserDetailList {
+public class UserDetailList extends GenericStatus{
     private List<UserDetail> elements;
     public List<UserDetail> getElements() {
         return elements;

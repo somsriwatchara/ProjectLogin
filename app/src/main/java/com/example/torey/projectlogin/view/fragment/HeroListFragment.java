@@ -4,7 +4,6 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -20,8 +19,8 @@ import com.example.torey.projectlogin.R;
 import com.example.torey.projectlogin.Utilities;
 import com.example.torey.projectlogin.model.Hero;
 import com.example.torey.projectlogin.model.HeroList;
-import com.example.torey.projectlogin.model.Login;
 import com.example.torey.projectlogin.model.UserDetail;
+import com.example.torey.projectlogin.model.UserDetailList;
 import com.example.torey.projectlogin.service.HeroListCallService;
 import com.example.torey.projectlogin.service.LoginService;
 import com.example.torey.projectlogin.view.Activity.InsertProductActivity;
@@ -45,7 +44,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import static com.example.torey.projectlogin.Constants.LOGIN_URL;
 
 
-public class HeroListFragment extends Fragment {
+public class HeroListFragment extends BaseFragment {
     @BindView(R.id.recycler_view)
     RecyclerView heroList;
     @BindView(R.id.view_pager)
@@ -61,7 +60,6 @@ public class HeroListFragment extends Fragment {
     @BindView(R.id.btn_insert_product)
     Button buttonInsertProduct;
     private UserDetail userDetail;
-    private ProgressDialog progressDialog;
 
     public static HeroListFragment newInstance(UserDetail userDetail) {
         HeroListFragment fragment = new HeroListFragment();
@@ -79,22 +77,19 @@ public class HeroListFragment extends Fragment {
         buttonShowUser.setVisibility(View.GONE);
         buttonInsertProduct.setVisibility(View.GONE);
         userDetail = getArguments().getParcelable("USER_DETAIL");
-        if (userDetail != null) {
-//            textViewUpdate.setText(userDetail.getMember_name());
-            Utilities.setLoadImagesConner(getContext(), userDetail.getMember_img(), imageViewProfileTool);
 
-            //save status admin
-            SharedPreferences sp = getActivity().getSharedPreferences("member", getContext().MODE_PRIVATE);
-            SharedPreferences.Editor editor = sp.edit();
-            editor.putString("My_member_admin", userDetail.getMember_admin());
-            editor.commit();
+        //save status admin
+        SharedPreferences sp = getActivity().getSharedPreferences("member", getContext().MODE_PRIVATE);
+        String adminStatus = sp.getString("My_member_admin", "0");
+        String imgStatus = sp.getString("My_member_img", String.valueOf(R.drawable.logo_wink_white));
+        Utilities.setLoadImagesConner(getContext(), imgStatus, imageViewProfileTool);
 
 
-            if (userDetail.getMember_admin().equals("1")) {
-                buttonShowUser.setVisibility(View.VISIBLE);
-                buttonInsertProduct.setVisibility(View.VISIBLE);
-            }
+        if (adminStatus.equals("1")) {
+            buttonShowUser.setVisibility(View.VISIBLE);
+            buttonInsertProduct.setVisibility(View.VISIBLE);
         }
+
         //Build Retrofit
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(LOGIN_URL)
@@ -136,65 +131,54 @@ public class HeroListFragment extends Fragment {
 
     @OnClick(R.id.image_profile_tool)
     void onClickToolbar() {
-
+        SharedPreferences sp = getActivity().getSharedPreferences("member", getContext().MODE_PRIVATE);
+        String userId = sp.getString("My_member_id", "");
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(LOGIN_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         LoginService loginService = retrofit.create(LoginService.class);
-        Call<Login> call = loginService.getLoginData(userDetail.getMember_username(), userDetail.getMember_password());
+        Call<UserDetailList> call = loginService.getUser(userId);
 
         progressDialog = new ProgressDialog(getContext());
         progressDialog.setMessage(" loading....");
         showDialog();
-        call.enqueue(new Callback<Login>() {
+        call.enqueue(new Callback<UserDetailList>() {
             @Override
-            public void onResponse(Call<Login> call, Response<Login> response) {
-                Login login = response.body();
-                if (login.getStatus_code() == 1000) {
+            public void onResponse(Call<UserDetailList> call, Response<UserDetailList> response) {
+                if (response.body().getStatus_code() == 1000) {
+                    UserDetail TotalUser = response.body().getElements().get(0);
                     Intent intent = new Intent(getContext(), ProfileActivity.class);
-                    intent.putExtra("USER_DETAIL", login.getUserDetails().get(0));
+                    intent.putExtra("USER_DETAIL", TotalUser);
                     startActivity(intent);
-                    getActivity().finish();
                     hideDialog();
                 } else {
-                    Toast.makeText(getContext(), login.getStatus_description(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), response.body().getStatus_description(), Toast.LENGTH_LONG).show();
                     hideDialog();
                 }
             }
 
             @Override
-            public void onFailure(Call<Login> call, Throwable t) {
+            public void onFailure(Call<UserDetailList> call, Throwable t) {
                 Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_LONG).show();
+                hideDialog();
+
             }
         });
     }
 
 
-
-
     @OnClick(R.id.btn_show_user)
     void onClickShowUser() {
         Intent intent = new Intent(getContext(), ShowUserActivity.class);
-        intent.putExtra("USER_DETAIL", userDetail);
         startActivity(intent);
-        getActivity().finish();
     }
 
     @OnClick(R.id.btn_insert_product)
-    void onClickInsertProduct(){
+    void onClickInsertProduct() {
         Intent intent = new Intent(getContext(), InsertProductActivity.class);
         startActivity(intent);
     }
-    public void showDialog() {
 
-        if (progressDialog != null && !progressDialog.isShowing())
-            progressDialog.show();
-    }
 
-    public void hideDialog() {
-
-        if (progressDialog != null && progressDialog.isShowing())
-            progressDialog.dismiss();
-    }
 }

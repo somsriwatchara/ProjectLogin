@@ -107,9 +107,8 @@ public class DescriptionAcrivity extends AppCompatActivity {
 
                     Toast.makeText(getBaseContext(), "Delete Successful...", Toast.LENGTH_LONG).show();
                     sp = getSharedPreferences("userDetail", Context.MODE_PRIVATE);
-                    sp.getString("user", String.valueOf(userDetail));
+                    String userList = sp.getString("My_member_admin","");
                     Intent intent = new Intent(getBaseContext(), HeroListActivity.class);
-                    intent.putExtra("USER_DETAIL",userDetail);
                     startActivity(intent);
                     finish();
                     hideDialog();

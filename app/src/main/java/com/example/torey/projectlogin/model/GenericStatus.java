@@ -6,11 +6,6 @@ public class GenericStatus {
 
     private String status_description;
 
-    public String getNew_data() {
-        return new_data;
-    }
-
-    private String new_data;
 
     public Integer getStatus_code() {
         return status_code;

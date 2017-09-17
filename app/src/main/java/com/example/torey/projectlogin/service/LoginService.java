@@ -26,7 +26,7 @@ public interface LoginService {
 
     @FormUrlEncoded
     @POST("update.php")
-    Call<GenericStatus> editMemberName(@Field("member_id") String memberId,
+    Call<UserDetailList> editMemberName(@Field("member_id") String memberId,
                                        @Field("member_name") String updateName,
                                        @Field("member_facebook") String updateFacebook,
                                        @Field("member_ig") String updateIG,
@@ -45,6 +45,10 @@ public interface LoginService {
 
     @POST("insert_json.php")
     Call<GenericStatus> signUp(@Body LoginRequest loginRequest);
+
+    @FormUrlEncoded
+    @POST("select_user.php")
+    Call<UserDetailList> getUser(@Field("member_id") String member_id);
 
     @FormUrlEncoded
     @POST("product_insert.php")

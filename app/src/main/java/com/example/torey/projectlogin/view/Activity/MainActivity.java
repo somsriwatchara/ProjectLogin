@@ -2,6 +2,7 @@ package com.example.torey.projectlogin.view.Activity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.EditText;
@@ -67,8 +68,13 @@ public class MainActivity extends AppCompatActivity {
                     if (login.getStatus_code() == 1000) {
                         Intent intent = new Intent(getBaseContext(), HeroListActivity.class);
                         intent.putExtra("USER_DETAIL", login.getUserDetails().get(0));
+                        SharedPreferences sp = getSharedPreferences("member",MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sp.edit();
+                        editor.putString("My_member_img", login.getUserDetails().get(0).getMember_img());
+                        editor.putString("My_member_admin", login.getUserDetails().get(0).getMember_admin());
+                        editor.putString("My_member_id", login.getUserDetails().get(0).getMember_id());
+                        editor.commit();
                         startActivity(intent);
-                        finish();
                         hideDialog();
                     } else {
                         Toast.makeText(getBaseContext(), login.getStatus_description(), Toast.LENGTH_LONG).show();

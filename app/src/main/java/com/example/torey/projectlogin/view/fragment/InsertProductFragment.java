@@ -31,7 +31,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import static com.example.torey.projectlogin.Constants.LOGIN_URL;
 
 
-public class InsertProductFragment extends Fragment {
+public class InsertProductFragment extends BaseFragment {
     private ProgressDialog progressDialog;
     @BindView(R.id.insert_product_name)
     EditText insertName;
@@ -86,7 +86,6 @@ public class InsertProductFragment extends Fragment {
                 public void onResponse(Call<GenericStatus> call, Response<GenericStatus> response) {
                     if (response.body().getStatus_code() == 1000) {
                         Toast.makeText(getContext(), "Successful...", Toast.LENGTH_LONG).show();
-
                         Intent intent = new Intent(getContext(), HeroListActivity.class);
                         startActivity(intent);
                         hideDialog();
@@ -105,16 +104,6 @@ public class InsertProductFragment extends Fragment {
     }
 
 
-    public void showDialog() {
 
-        if (progressDialog != null && !progressDialog.isShowing())
-            progressDialog.show();
-    }
-
-    public void hideDialog() {
-
-        if (progressDialog != null && progressDialog.isShowing())
-            progressDialog.dismiss();
-    }
 }
 

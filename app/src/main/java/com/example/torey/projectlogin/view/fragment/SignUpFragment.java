@@ -29,8 +29,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import static com.example.torey.projectlogin.Constants.LOGIN_URL;
 
 
-public class SignUpFragment extends Fragment {
-    private ProgressDialog progressDialog;
+public class SignUpFragment extends BaseFragment {
     @BindView(R.id.input_confirm_password)
     EditText inputConfirmPassword;
     @BindView(R.id.input_line)
@@ -142,17 +141,6 @@ public class SignUpFragment extends Fragment {
 
             }
         }
-    }
-    public void showDialog() {
-
-        if (progressDialog != null && !progressDialog.isShowing())
-            progressDialog.show();
-    }
-
-    public void hideDialog() {
-
-        if (progressDialog != null && progressDialog.isShowing())
-            progressDialog.dismiss();
     }
 }
 

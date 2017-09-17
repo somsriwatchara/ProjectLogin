@@ -22,6 +22,7 @@ import com.example.torey.projectlogin.Utilities;
 import com.example.torey.projectlogin.model.GenericStatus;
 import com.example.torey.projectlogin.model.Login;
 import com.example.torey.projectlogin.model.UserDetail;
+import com.example.torey.projectlogin.model.UserDetailList;
 import com.example.torey.projectlogin.service.LoginService;
 import com.example.torey.projectlogin.view.Activity.HeroListActivity;
 import com.example.torey.projectlogin.view.Activity.MainActivity;
@@ -39,7 +40,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 import static com.example.torey.projectlogin.Constants.LOGIN_URL;
 
-public class ProfileFragment extends Fragment {
+public class ProfileFragment extends BaseFragment {
     private UserDetail userDetail;
     @BindView(R.id.output_member_facebook)
     TextView textViewFacebook;
@@ -83,7 +84,6 @@ public class ProfileFragment extends Fragment {
     Button buttonEditCancel;
     @BindView(R.id.button_log_out)
     Button buttonLogOut;
-    private ProgressDialog progressDialog;
 
 
     public static ProfileFragment newInstance(UserDetail userDetail) {
@@ -165,8 +165,10 @@ public class ProfileFragment extends Fragment {
             public void onClick(DialogInterface arg0, int arg1) {
                 // TODO Auto-generated method stub
                 Intent intent = new Intent(getContext(), MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                        Intent.FLAG_ACTIVITY_CLEAR_TASK |
+                        Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
-                getActivity().finish();
             }
         });
 
@@ -184,10 +186,9 @@ public class ProfileFragment extends Fragment {
 
     @OnClick(R.id.image_btn_back_tool)
     void onClickBack() {
-        Intent intent = new Intent(getContext(), HeroListActivity.class);
-        intent.putExtra("USER_DETAIL", userDetail);
-        startActivity(intent);
-        getActivity().finish();
+        if(getActivity() != null){
+            getActivity().finish();
+        }
     }
 
     @OnClick(R.id.button_edit_ok)
@@ -205,24 +206,25 @@ public class ProfileFragment extends Fragment {
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
             LoginService loginService = retrofit.create(LoginService.class);
-            Call<GenericStatus> call = loginService.editMemberName(userDetail.getMember_id(),
+            Call<UserDetailList> call = loginService.editMemberName(userDetail.getMember_id(),
                     updateName, updateFacebook, updateIG, updateLine, updatePage, updateProvince, updateTel);
             final ProgressDialog progressDialog;
             progressDialog = new ProgressDialog(getContext());
             progressDialog.setMessage(" loading....");
             showDialog();
 
-            call.enqueue(new Callback<GenericStatus>() {
+            call.enqueue(new Callback<UserDetailList>() {
                 @Override
-                public void onResponse(Call<GenericStatus> call, Response<GenericStatus> response) {
+                public void onResponse(Call<UserDetailList> call, Response<UserDetailList> response) {
                     if (response.body().getStatus_code() == 1000) {
-                        textViewName.setText(updateName);
-                        textViewIG.setText(updateIG);
-                        textViewFacebook.setText(updateFacebook);
-                        textViewLine.setText(updateLine);
-                        textViewTel.setText(updateTel);
-                        textViewPage.setText(updatePage);
-                        textViewProvince.setText(updateProvince);
+                        List<UserDetail> userDetails = response.body().getElements();
+                        textViewName.setText(userDetails.get(0).getMember_name());
+                        textViewIG.setText(userDetails.get(0).getMember_ig());
+                        textViewFacebook.setText(userDetails.get(0).getMember_facebook());
+                        textViewLine.setText(userDetails.get(0).getMember_line());
+                        textViewTel.setText(userDetails.get(0).getMember_tel());
+                        textViewPage.setText(userDetails.get(0).getMember_page());
+                        textViewProvince.setText(userDetails.get(0).getMember_province());
                         Toast.makeText(getContext(), "Successful...", Toast.LENGTH_LONG).show();
                         buttonEditOk.setVisibility(View.GONE);
                         editTextUpDateFacebook.setVisibility(View.GONE);
@@ -245,11 +247,12 @@ public class ProfileFragment extends Fragment {
                         hideDialog();
                     } else {
                         Toast.makeText(getContext(), response.body().getStatus_description(), Toast.LENGTH_LONG).show();
+                        hideDialog();
                     }
                 }
 
                 @Override
-                public void onFailure(Call<GenericStatus> call, Throwable t) {
+                public void onFailure(Call<UserDetailList> call, Throwable t) {
                     Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_LONG).show();
                 }
             });
@@ -276,55 +279,17 @@ public class ProfileFragment extends Fragment {
         textViewFacebook.setVisibility(View.GONE);
         textViewIG.setVisibility(View.GONE);
         textViewName.setVisibility(View.GONE);
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(LOGIN_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        LoginService loginService = retrofit.create(LoginService.class);
-        Call<Login> call = loginService.getLoginData(userDetail.getMember_username(), userDetail.getMember_password());
 
-        progressDialog = new ProgressDialog(getContext());
-        progressDialog.setMessage(" loading....");
-        showDialog();
-        call.enqueue(new Callback<Login>() {
-            @Override
-            public void onResponse(Call<Login> call, Response<Login> response) {
-                Login login = response.body();
-                if (login.getStatus_code() == 1000) {
-                    List<UserDetail> userDetails = login.getUserDetails();
-                    if (userDetail != null) {
-                        editTextUpDateName.setText(userDetail.getMember_name());
-                        editTextUpDateIG.setText(userDetail.getMember_ig());
-                        editTextUpDateFacebook.setText(userDetail.getMember_facebook());
-                        editTextUpDateLine.setText(userDetail.getMember_line());
-                        editTextUpDateTel.setText(userDetail.getMember_tel());
-                        editTextUpDatePage.setText(userDetail.getMember_page());
-                        editTextUpDateProvince.setText(userDetail.getMember_province());
-                        hideDialog();
+        if (userDetail != null) {
+            editTextUpDateName.setText(textViewName.getText());
+            editTextUpDateIG.setText(textViewIG.getText());
+            editTextUpDateFacebook.setText(textViewFacebook.getText());
+            editTextUpDateLine.setText(textViewLine.getText());
+            editTextUpDateTel.setText(textViewTel.getText());
+            editTextUpDatePage.setText(textViewPage.getText());
+            editTextUpDateProvince.setText(textViewProvince.getText());
 
-                    }
-                } else {
-                    Toast.makeText(getContext(), login.getStatus_description(), Toast.LENGTH_LONG).show();
-                    hideDialog();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Login> call, Throwable t) {
-                Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_LONG).show();
-            }
-        });
-    }
-    public void showDialog() {
-
-        if (progressDialog != null && !progressDialog.isShowing())
-            progressDialog.show();
-    }
-
-    public void hideDialog() {
-
-        if (progressDialog != null && progressDialog.isShowing())
-            progressDialog.dismiss();
+        }
     }
 
 }

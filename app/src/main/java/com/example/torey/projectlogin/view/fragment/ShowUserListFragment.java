@@ -33,10 +33,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 import static com.example.torey.projectlogin.Constants.LOGIN_URL;
 
-public class ShowUserListFragment extends Fragment {
+public class ShowUserListFragment extends BaseFragment {
     @BindView(R.id.recycler_view_user)
     RecyclerView recyclerUser;
-    private ProgressDialog progressDialog;
     private UserDetail userDetail;
     @BindView(R.id.toolbar_show_user)
     Toolbar toolbarShowUser;
@@ -94,17 +93,6 @@ public class ShowUserListFragment extends Fragment {
         intent.putExtra("USER_DETAIL", userDetail);
         startActivity(intent);
         getActivity().finish();
-    }
-    public void showDialog() {
-
-        if (progressDialog != null && !progressDialog.isShowing())
-            progressDialog.show();
-    }
-
-    public void hideDialog() {
-
-        if (progressDialog != null && progressDialog.isShowing())
-            progressDialog.dismiss();
     }
 
 }
