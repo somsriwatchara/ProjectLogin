@@ -21,6 +21,7 @@ public interface LoginService {
     @POST("login.php")
     Call<Login> getLoginData(@Field("username") String usernameString,
                              @Field("password") String passwordString);
+
     @FormUrlEncoded
     @POST("update.php")
     Call<GenericStatus> editMemberName(@Field("member_id") String memberId,
@@ -31,6 +32,7 @@ public interface LoginService {
                                        @Field("member_page") String updatePage,
                                        @Field("member_province") String updateProvince,
                                        @Field("member_tel") String updateTel);
+
     @FormUrlEncoded
     @POST("product_delete.php")
     Call<HeroList> getDeleteProduct(@Field("product_id") String product_id);
@@ -52,5 +54,12 @@ public interface LoginService {
                                @Field("member_page") String insertInputPage,
                                @Field("member_province") String insertInputProvince);
 
+    @FormUrlEncoded
+    @POST("product_insert.php")
+    Call<GenericStatus> insertProduct(@Field("product_name") String insertNameProduct,
+                                      @Field("product_image") String insertImageProduct,
+                                      @Field("product_price") String insertPriceProduct,
+                                      @Field("product_description") String insertDescriptionProduct,
+                                      @Field("product_how_to") String insertHowToUseProduct);
 
 }

@@ -2,22 +2,16 @@ package com.example.torey.projectlogin.view.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.TypedArray;
-import android.graphics.Color;
 import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.example.torey.projectlogin.R;
 import com.example.torey.projectlogin.Utilities;
 import com.example.torey.projectlogin.model.Hero;
-import com.example.torey.projectlogin.model.UserDetail;
 import com.example.torey.projectlogin.view.Activity.DescriptionAcrivity;
 
 import java.util.List;
@@ -52,7 +46,7 @@ public class ViewPagerAdapter extends PagerAdapter {
         layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View item_view = layoutInflater.inflate(R.layout.item_view_pager, container, false);
         ImageView imageView = (ImageView) item_view.findViewById(R.id.image_slid);
-        Utilities.setloadImages(
+        Utilities.setLoadImages(
                 context
                 , heroes.get(position).getProduct_image()
                 , imageView

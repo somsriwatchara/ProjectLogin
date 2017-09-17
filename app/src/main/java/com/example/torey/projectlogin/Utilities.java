@@ -68,8 +68,33 @@ public class Utilities {
         }
         return false;
     }
+    public static boolean validateInsertProduct(String insertNameProduct, String insertImageProduct, String insertPriceProduct, String insertDescriptionProduct, String insertHowToUseProduct, Context context) {
+        boolean isEmpty = false;
+        if (insertNameProduct.equals("")) {
+            isEmpty = true;
+            Toast.makeText(context, "Please input  Name", Toast.LENGTH_LONG).show();
+            return isEmpty;
+        } else if (insertImageProduct.equals("")) {
+            isEmpty = true;
+            Toast.makeText(context, "Please input  Image", Toast.LENGTH_LONG).show();
+            return isEmpty;
+        } else if (insertPriceProduct.equals("")) {
+            isEmpty = true;
+            Toast.makeText(context, "Please input Price", Toast.LENGTH_LONG).show();
+            return isEmpty;
+        } else if (insertDescriptionProduct.equals("")) {
+            isEmpty = true;
+            Toast.makeText(context, "Please input  Description ", Toast.LENGTH_LONG).show();
+            return isEmpty;
+        } else if (insertHowToUseProduct.equals("")) {
+            isEmpty = true;
+            Toast.makeText(context, "Please input How to use", Toast.LENGTH_LONG).show();
+            return isEmpty;
+        }
+        return false;
+    }
 
-    public static void setloadImagesconner(Context context, String url, ImageView imageView) {
+    public static void setLoadImagesConner(Context context, String url, ImageView imageView) {
         Glide.with(context)
                 .load(url)
                 .transform(new CircleTransform(context))
@@ -77,7 +102,7 @@ public class Utilities {
                 .into(imageView);
     }
 
-    public static void setloadImages(Context context, String url, ImageView imageView) {
+    public static void setLoadImages(Context context, String url, ImageView imageView) {
         Glide.with(context)
                 .load(url)
                 .placeholder(R.drawable.logo_id)

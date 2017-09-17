@@ -2,22 +2,17 @@ package com.example.torey.projectlogin.view.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.TypedArray;
-import android.graphics.Color;
-import android.os.Parcelable;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.torey.projectlogin.R;
 import com.example.torey.projectlogin.Utilities;
 import com.example.torey.projectlogin.model.Hero;
-import com.example.torey.projectlogin.model.UserDetail;
 import com.example.torey.projectlogin.view.Activity.DescriptionAcrivity;
 
 import java.util.List;
@@ -52,7 +47,7 @@ public class HeroListAdapter extends RecyclerView.Adapter<HeroListAdapter.HeroCa
 
     @Override
     public void onBindViewHolder(HeroCardViewHolder holder, final int position) {
-        Utilities.setloadImagesconner(
+        Utilities.setLoadImagesConner(
                 context
                 , heroes.get(position).getProduct_image()
                 , holder.logoImageView

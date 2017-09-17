@@ -24,7 +24,7 @@
         <activity android:name=".view.Activity.ProfileActivity" />
         <activity android:name=".view.Activity.DetailUserActivity" />
         <activity android:name=".view.Activity.ShowUserActivity" />
-        <activity android:name=".view.fragment.ShowUserListFragment" />
+        <activity android:name=".view.Activity.InsertProductActivity" />
         <activity android:name=".view.Activity.MainActivity"></activity>
     </application>
 

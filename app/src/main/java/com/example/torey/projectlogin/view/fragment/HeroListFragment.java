@@ -2,6 +2,7 @@ package com.example.torey.projectlogin.view.fragment;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -23,6 +24,7 @@ import com.example.torey.projectlogin.model.Login;
 import com.example.torey.projectlogin.model.UserDetail;
 import com.example.torey.projectlogin.service.HeroListCallService;
 import com.example.torey.projectlogin.service.LoginService;
+import com.example.torey.projectlogin.view.Activity.InsertProductActivity;
 import com.example.torey.projectlogin.view.Activity.ProfileActivity;
 import com.example.torey.projectlogin.view.Activity.ShowUserActivity;
 import com.example.torey.projectlogin.view.adapter.HeroListAdapter;
@@ -40,7 +42,6 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-import static com.example.torey.projectlogin.Constants.BASE_URL;
 import static com.example.torey.projectlogin.Constants.LOGIN_URL;
 
 
@@ -57,6 +58,8 @@ public class HeroListFragment extends Fragment {
     ImageView imageViewProfileTool;
     @BindView(R.id.btn_show_user)
     Button buttonShowUser;
+    @BindView(R.id.btn_insert_product)
+    Button buttonInsertProduct;
     private UserDetail userDetail;
     private ProgressDialog progressDialog;
 
@@ -74,12 +77,22 @@ public class HeroListFragment extends Fragment {
         ButterKnife.bind(this, view);
         myToolbar.setClickable(true);
         buttonShowUser.setVisibility(View.GONE);
+        buttonInsertProduct.setVisibility(View.GONE);
         userDetail = getArguments().getParcelable("USER_DETAIL");
         if (userDetail != null) {
 //            textViewUpdate.setText(userDetail.getMember_name());
-            Utilities.setloadImagesconner(getContext(), userDetail.getMember_img(), imageViewProfileTool);
+            Utilities.setLoadImagesConner(getContext(), userDetail.getMember_img(), imageViewProfileTool);
+
+            //save status admin
+            SharedPreferences sp = getActivity().getSharedPreferences("member", getContext().MODE_PRIVATE);
+            SharedPreferences.Editor editor = sp.edit();
+            editor.putString("My_member_admin", userDetail.getMember_admin());
+            editor.commit();
+
+
             if (userDetail.getMember_admin().equals("1")) {
                 buttonShowUser.setVisibility(View.VISIBLE);
+                buttonInsertProduct.setVisibility(View.VISIBLE);
             }
         }
         //Build Retrofit
@@ -167,6 +180,12 @@ public class HeroListFragment extends Fragment {
         startActivity(intent);
         getActivity().finish();
     }
+
+    @OnClick(R.id.btn_insert_product)
+    void onClickInsertProduct(){
+        Intent intent = new Intent(getContext(), InsertProductActivity.class);
+        startActivity(intent);
+    }
     public void showDialog() {
 
         if (progressDialog != null && !progressDialog.isShowing())
@@ -178,5 +197,4 @@ public class HeroListFragment extends Fragment {
         if (progressDialog != null && progressDialog.isShowing())
             progressDialog.dismiss();
     }
-
 }

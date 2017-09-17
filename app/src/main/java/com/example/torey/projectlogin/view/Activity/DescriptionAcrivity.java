@@ -1,30 +1,24 @@
 package com.example.torey.projectlogin.view.Activity;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.torey.projectlogin.R;
 import com.example.torey.projectlogin.Utilities;
-import com.example.torey.projectlogin.model.GenericStatus;
 import com.example.torey.projectlogin.model.Hero;
 import com.example.torey.projectlogin.model.HeroList;
 import com.example.torey.projectlogin.model.UserDetail;
-import com.example.torey.projectlogin.service.HeroListCallService;
 import com.example.torey.projectlogin.service.LoginService;
-import com.example.torey.projectlogin.view.adapter.HeroListAdapter;
-import com.example.torey.projectlogin.view.adapter.ViewPagerAdapter;
 
 import java.util.List;
 
@@ -41,9 +35,9 @@ import static com.example.torey.projectlogin.Constants.HERO_LIST;
 import static com.example.torey.projectlogin.Constants.LOGIN_URL;
 
 public class DescriptionAcrivity extends AppCompatActivity {
-
-    //
     private Hero hero;
+    private SharedPreferences sp;
+    private UserDetail userDetail;
     @BindView(R.id.how_to_use)
     TextView howToUse;
     @BindView(R.id.name_product_des)
@@ -67,7 +61,6 @@ public class DescriptionAcrivity extends AppCompatActivity {
         adapterProduct();
 
 
-
     }
 
     private void adapterProduct() {
@@ -76,13 +69,14 @@ public class DescriptionAcrivity extends AppCompatActivity {
         nameProduct.setText(hero.getProduct_name());
         descriptionProduct.setText(hero.getProduct_description());
         priceProduct.setText(hero.getProduct_price());
-        Utilities.setloadImages(this, hero.getProduct_image(), imageProduct);
+        Utilities.setLoadImages(this, hero.getProduct_image(), imageProduct);
 
-
-//        buttonDeleteProduct.setVisibility(View.GONE);
-//        if (userDetail.getMember_admin().equals("1")) {
-//            buttonDeleteProduct.setVisibility(View.VISIBLE);
-//        }
+        //get data status admin
+        sp = getSharedPreferences("member", this.MODE_PRIVATE);
+        buttonDeleteProduct.setVisibility(View.GONE);
+        if (sp.getString("My_member_admin", "1").equals("1")) {
+            buttonDeleteProduct.setVisibility(View.VISIBLE);
+        }
     }
 
     @OnClick(R.id.buy_product_des)
@@ -112,11 +106,13 @@ public class DescriptionAcrivity extends AppCompatActivity {
                 if (response.body().getStatus_code() == 1000) {
 
                     Toast.makeText(getBaseContext(), "Delete Successful...", Toast.LENGTH_LONG).show();
-
-                    hideDialog();
-                    Intent intent = new Intent(getBaseContext(),HeroListActivity.class);
+                    sp = getSharedPreferences("userDetail", Context.MODE_PRIVATE);
+                    sp.getString("user", String.valueOf(userDetail));
+                    Intent intent = new Intent(getBaseContext(), HeroListActivity.class);
+                    intent.putExtra("USER_DETAIL",userDetail);
                     startActivity(intent);
                     finish();
+                    hideDialog();
                 } else {
                     Toast.makeText(getBaseContext(), response.body().getStatus_description(), Toast.LENGTH_LONG).show();
                 }
