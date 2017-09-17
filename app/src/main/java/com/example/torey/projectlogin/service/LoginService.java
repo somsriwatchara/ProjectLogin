@@ -4,8 +4,10 @@ import com.example.torey.projectlogin.model.GenericStatus;
 import com.example.torey.projectlogin.model.HeroList;
 import com.example.torey.projectlogin.model.Login;
 import com.example.torey.projectlogin.model.UserDetailList;
+import com.example.torey.projectlogin.model.request.LoginRequest;
 
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -41,18 +43,8 @@ public interface LoginService {
     @POST("delete.php")
     Call<GenericStatus> getDeleteUser(@Field("member_id") String member_id);
 
-    @FormUrlEncoded
-    @POST("insert.php")
-    Call<GenericStatus> signUp(@Field("member_username") String insertInputUsername,
-                               @Field("member_password") String insertInputPassword,
-                               @Field("member_name") String insertInputName,
-                               @Field("member_line") String insertInputLine,
-                               @Field("member_tal") String insertInputTel,
-                               @Field("member_image") String insertInputImage,
-                               @Field("member_facebook") String insertInputFacebook,
-                               @Field("member_ig") String insertInputIG,
-                               @Field("member_page") String insertInputPage,
-                               @Field("member_province") String insertInputProvince);
+    @POST("insert_json.php")
+    Call<GenericStatus> signUp(@Body LoginRequest loginRequest);
 
     @FormUrlEncoded
     @POST("product_insert.php")

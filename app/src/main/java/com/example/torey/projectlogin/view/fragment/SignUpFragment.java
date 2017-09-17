@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.example.torey.projectlogin.R;
 import com.example.torey.projectlogin.Utilities;
 import com.example.torey.projectlogin.model.GenericStatus;
+import com.example.torey.projectlogin.model.request.LoginRequest;
 import com.example.torey.projectlogin.service.LoginService;
 import com.example.torey.projectlogin.view.Activity.MainActivity;
 
@@ -86,17 +87,30 @@ public class SignUpFragment extends Fragment {
         String insertInputProvince = inputProvince.getText().toString();
         if (Utilities.validateSignUp(insertInputUsername, insertInputPassword, insertInputName,
                 insertInputLine, insertInputImage, insertInputTel, getContext())) {
+
         } else {
             if (insertInputPassword.equals(insertInputConfirmPassword)) {
+
+                LoginRequest request = LoginRequest.create()
+                        .withInsertInputFacebook(insertInputFacebook)
+                        .withInsertInputIG(insertInputIG)
+                        .withInsertInputImage(insertInputImage)
+                        .withInsertInputLine(insertInputLine)
+                        .withInsertInputName(insertInputName)
+                        .withInsertInputPage(insertInputPage)
+                        .withInsertInputPassword(insertInputPassword)
+                        .withInsertInputProvince(insertInputProvince)
+                        .withInsertInputTel(insertInputTel)
+                        .withInsertInputUsername(insertInputUsername);
+
+
                 Retrofit retrofit = new Retrofit.Builder()
                         .baseUrl(LOGIN_URL)
                         .addConverterFactory(GsonConverterFactory.create())
                         .build();
+
                 LoginService loginService = retrofit.create(LoginService.class);
-                Call<GenericStatus> call = loginService.signUp(insertInputUsername,
-                        insertInputPassword, insertInputName,
-                        insertInputLine, insertInputTel, insertInputImage, insertInputFacebook,
-                        insertInputIG, insertInputPage, insertInputProvince);
+                Call<GenericStatus> call = loginService.signUp(request);
                 progressDialog = new ProgressDialog(getContext());
                 progressDialog.setMessage(" loading....");
                 showDialog();
